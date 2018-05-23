@@ -23,6 +23,7 @@
   NSAttributedString *_Nullable _localAttributedText;
   CGSize _previousContentSize;
 
+NSString *_text;
   NSTextStorage *_textStorage;
   NSTextContainer *_textContainer;
   NSLayoutManager *_layoutManager;
@@ -100,6 +101,19 @@
     @"target": self.reactTag,
   });
 }
+
+
+- (NSString *)text
+{
+  return _text;
+}
+
+- (void)setText:(NSString *)text
+{
+  _text = text;
+  _previousAttributedText = _localAttributedText;
+}
+
 
 #pragma mark - RCTUIManagerObserver
 
@@ -180,8 +194,8 @@
     // Placeholder also can represent the intrinsic size when it is visible.
     NSString *text = self.placeholder;
     if (!text.length) {
-      // Note: `zero-width space` is insufficient in some cases.
-      text = @"I";
+      // Zero-width space
+      text = @"\u200B";
     }
     attributedText = [[NSAttributedString alloc] initWithString:text attributes:self.textAttributes.effectiveTextAttributes];
   }
